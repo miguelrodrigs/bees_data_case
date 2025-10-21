@@ -1,63 +1,66 @@
-BEES Data Engineering: Pipeline de Cervejarias
-1. Visão Geral e Escolhas da Stack
-O objetivo deste projeto foi construir uma pipeline de dados ponta a ponta, consumindo a Open Brewery DB API e aplicando o modelo de Arquitetura Medallion (Bronze → Silver → Gold).
+# BEES Data Engineering: Brewery Data Pipeline
 
+## 1. Overview & Stack Choices
 
-A meta final é entregar uma visão analítica limpa e agregada para consumo (BI).
+The goal of this project is to build an **end-to-end data pipeline** consuming the **Open Brewery DB API** and applying the **Medallion Architecture model (Bronze → Silver → Gold)**.  
+The final objective is to deliver a **clean and aggregated analytical view** for BI consumption.
 
-1.1 Escolhas Técnicas
+### 1.1 Technical Choices
 
-Linguagem: Optei por Python e PySpark. Python para o consumo da API (requests) e PySpark para as transformações (Silver e Gold), garantindo que a solução é escalável, mesmo que o volume de dados seja pequeno agora.
+- **Language:** Python & PySpark  
+  - Python was used to consume the API (`requests` library).  
+  - PySpark was used for data transformations (Silver & Gold layers), ensuring scalability even if the data volume is currently small.
 
+- **Containerization:**  
+  The project uses **Docker** to package the environment (PySpark, Jupyter), ensuring anyone can run it with a single command.
 
-Containerização: O projeto usa Docker  para empacotar o ambiente (PySpark,jupyter), garantindo que qualquer pessoa possa rodá-lo com um único comando.
+## 2. Pipeline Flow (Medallion Architecture)
 
-2. Fluxo da Pipeline (Medallion)
-A pipeline é dividida em três estágios, onde o dado é progressivamente refinado:
+The pipeline is divided into **three stages**, where data is progressively refined.
 
-Bronze Layer (Raw Data)
+### Bronze Layer (Raw Data)
+**Action:**  
+Fetch paginated data from the API and persist it in its original format (**JSON**).
 
-Ação: Coleta de dados paginada da API e persistência no formato original (JSON).
+---
 
-Silver Layer (Curated Data)
-Ação: Leitura do JSON, transformação e limpeza dos dados.
+### Silver Layer (Curated Data)
+**Action:**  
+Read the JSON data, transform and clean it.  
+**Output:** Parquet (a columnar format for efficient reading).
 
+#### Transformation Rules (Required Explanation):
 
-Saída: Parquet (formato colunar para leitura eficiente).
+- **Partitioning:**  
+  Data is saved **partitioned by location** (`country` and `state_province`) to improve BI query performance.
 
-Regras de Transformação (Explicação exigida):
+- **Normalization:**  
+  Applied `lower()` and `trim()` on key fields (`brewery_type`, `country`, `state_province`) to ensure consistency and avoid duplicates during partitioning and aggregation.
 
+- **Null Handling:**  
+  Implemented rules to handle null or empty strings in essential fields, replacing them with a default value such as `'unknown'` to prevent PySpark failures.
 
-Particionamento: Os dados são salvos particionados pela localização (country e state_province). Isso melhora a performance de leitura em consultas de BI.
+---
 
-Normalização: Apliquei lower() e trim() em campos chave (brewery_type, country, state_province) para garantir a consistência dos dados e evitar duplicação no particionamento e agregação.
+### Gold Layer (Analytical View)
+**Action:**  
+Generate the **final analytical view** for BI consumption.  
 
-Tratamento de Nulos: Implementei regras para tratar valores nulos ou strings vazias em campos essenciais, substituindo-os por um valor padrão como 'unknown' para evitar falhas no PySpark.
+**Transformation:**  
+Aggregation of the number of breweries (`COUNT`) by **type and location**.  
+This is the **only business logic** applied in this layer.
 
-Gold Layer (Analytical View)
-Ação: Geração da visão final para consumo de BI.
+---
 
+## 3. Execution Instructions
 
-Transformação: Agregação da quantidade de cervejarias (COUNT) por tipo e localização. Esta é a única lógica de negócio aplicada nesta camada.
+###  Prerequisites
+- Docker  
+- Docker Compose  
 
-
-3. Instruções de Execução
-Pré-requisitos: Docker e Docker Compose instalados.
-
-Clonar Repositório:
-
-Bash
-
+###  Clone Repository
+```bash
 git clone https://github.com/miguelrodrigs/bees_data_case
-Construir e Iniciar o Ambiente:
 
-
-Construir e Iniciar o Ambiente (Jupyter):
-Bash
+Build and Start Environment (Jupyter)
 docker-compose up --build -d
-Isso inicia o ambiente Jupyter Lab na porta 8888
-
-
-##MONITORAMENTO E ALERTAS##
-
-O monitoramento e alertas devem cobrir a saúde operacional (sucesso/falha, tempo de execução, retries), a qualidade dos dados (checagem de volume, valores nulos, esquema e frescor em cada camada), e problemas de infraestrutura/API (uso de recursos, latência da API de origem). O orquestrador (ex: Airflow) deve disparar alertas imediatos em caso de falha ou atraso (SLA), e as falhas de qualidade críticas devem interromper o pipeline para evitar dados ruins. Todas as métricas devem ser visualizadas em um dashboard para visibilidade completa.
