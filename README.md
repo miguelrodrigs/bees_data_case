@@ -51,8 +51,10 @@ Aggregation of the number of breweries (`COUNT`) by **type and location**.
 This is the **only business logic** applied in this layer.
 
 ---
+## 3. Monitoring and Alerts 
 
-## 3. Execution Instructions
+Monitoring and alerting should cover operational health, tracking success/failure status, execution time, and retries; data quality, including checks for volume, null values, schema integrity, and data freshness at each layer; and infrastructure/API issues, such as resource usage and source API latency. The orchestrator (e.g., Airflow) must be configured to trigger immediate alerts upon any failure or SLA violation, and critical data quality failures must immediately stop the pipeline to prevent the propagation of bad data. All these metrics should be centralized and visualized in a dedicated dashboard for complete operational visibility.
+## 4. Execution Instructions
 
 ###  Prerequisites
 - Docker  
@@ -66,6 +68,4 @@ Build and Start Environment (Jupyter)
 docker-compose up --build -d
 
 
-```## Monitoring and Alerts 🚨
 
-Monitoring and alerting should cover operational health, tracking success/failure status, execution time, and retries; data quality, including checks for volume, null values, schema integrity, and data freshness at each layer; and infrastructure/API issues, such as resource usage and source API latency. The orchestrator (e.g., Airflow) must be configured to trigger immediate alerts upon any failure or SLA violation, and critical data quality failures must immediately stop the pipeline to prevent the propagation of bad data. All these metrics should be centralized and visualized in a dedicated dashboard for complete operational visibility.
