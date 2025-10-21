@@ -65,7 +65,6 @@ git clone https://github.com/miguelrodrigs/bees_data_case
 Build and Start Environment (Jupyter)
 docker-compose up --build -d```
 
----
 
 ## Monitoring and Alerts 🚨
 
