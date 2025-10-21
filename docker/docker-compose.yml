@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+  # -----------------------------------------------------------
+  # SERVIÇO DE EXECUÇÃO: Corrigido para usar uma imagem base
+  # -----------------------------------------------------------
+  pipeline-runner:
+    # Usamos uma imagem Python oficial para garantir a execução
+    image: python:3.11-slim 
+    
+    volumes:
+      # Mapeia a raiz do projeto para a pasta /app
+      - ..:/app
+      
+    # Instala o PySpark antes de rodar o comando principal (necessário para rodar o script)
+    entrypoint: 
+      - /bin/bash  
+      - -c
+      - |
+        pip install pyspark 
+        python /app/main.py --output /app/data_lake
+        
+    working_dir: /app
+    
+  # -----------------------------------------------------------
+  # JUPYTER (para desenvolvimento e execução manual)
+  # -----------------------------------------------------------
+  jupyter-pyspark:
+    image: jupyter/pyspark-notebook:latest
+    ports:
+      - "8888:8888"
+    volumes:
+      - ..:/home/jovyan/workspace
+    working_dir: /home/jovyan/workspace
+    command: start-notebook.sh --NotebookApp.token='' --ip='0.0.0.0'
+    
