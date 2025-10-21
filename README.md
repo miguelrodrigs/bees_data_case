@@ -37,8 +37,6 @@ Read the JSON data, transform and clean it.
 - **Normalization:**  
   Applied `lower()` and `trim()` on key fields (`brewery_type`, `country`, `state_province`) to ensure consistency and avoid duplicates during partitioning and aggregation.
 
-- **Null Handling:**  
-  Implemented rules to handle null or empty strings in essential fields, replacing them with a default value such as `'unknown'` to prevent PySpark failures.
 
 ---
 
