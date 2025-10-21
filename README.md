@@ -67,4 +67,7 @@ docker-compose up --build -d
 
 
 ---
-##MONITORING AND ALERTS## Monitoring and alerting should cover operational health (success/failure, execution time, retries), data quality (checking volume, null values, schema, and freshness at each layer), and infrastructure/API issues (resource usage, source API latency). The orchestrator (e.g., Airflow) should trigger immediate alerts on failure or delay (SLA), and critical quality failures should stop the pipeline to prevent bad data. All metrics should be visualized in a dashboard for complete visibility.
+
+## Monitoring and Alerts
+
+Monitoring and alerting should cover operational health, tracking success/failure status, execution time, and retries; data quality, including checks for volume, null values, schema integrity, and data freshness at each layer; and infrastructure/API issues, such as resource usage and source API latency. The orchestrator (e.g., Airflow) must be configured to trigger immediate alerts upon any failure or SLA violation, and critical data quality failures must immediately stop the pipeline to prevent the propagation of bad data. All these metrics should be centralized and visualized in a dedicated dashboard for complete operational visibility.
