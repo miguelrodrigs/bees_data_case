@@ -10,7 +10,7 @@ A meta final é entregar uma visão analítica limpa e agregada para consumo (BI
 Linguagem: Optei por Python e PySpark. Python para o consumo da API (requests) e PySpark para as transformações (Silver e Gold), garantindo que a solução é escalável, mesmo que o volume de dados seja pequeno agora.
 
 
-Containerização: O projeto usa Docker  para empacotar o ambiente (PySpark,jupyte), garantindo que qualquer pessoa possa rodá-lo com um único comando.
+Containerização: O projeto usa Docker  para empacotar o ambiente (PySpark,jupyter), garantindo que qualquer pessoa possa rodá-lo com um único comando.
 
 2. Fluxo da Pipeline (Medallion)
 A pipeline é dividida em três estágios, onde o dado é progressivamente refinado:
