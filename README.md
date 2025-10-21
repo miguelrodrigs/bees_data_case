@@ -65,7 +65,6 @@ git clone https://github.com/miguelrodrigs/bees_data_case
 Build and Start Environment (Jupyter)
 docker-compose up --build -d
 
-##MONITORING AND ALERTS## Monitoring and alerting should cover operational health (success/failure, execution time, retries), data quality (checking volume, null values, schema, and freshness at each layer), and infrastructure/API issues (resource usage, source API latency). The orchestrator (e.g., Airflow) should trigger immediate alerts on failure or delay (SLA), and critical quality failures should stop the pipeline to prevent bad data. All metrics should be visualized in a dashboard for complete visibility.
 
-
+---
 ##MONITORING AND ALERTS## Monitoring and alerting should cover operational health (success/failure, execution time, retries), data quality (checking volume, null values, schema, and freshness at each layer), and infrastructure/API issues (resource usage, source API latency). The orchestrator (e.g., Airflow) should trigger immediate alerts on failure or delay (SLA), and critical quality failures should stop the pipeline to prevent bad data. All metrics should be visualized in a dashboard for complete visibility.
