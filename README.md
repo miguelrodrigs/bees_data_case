@@ -14,8 +14,6 @@ The final objective is to deliver a **clean and aggregated analytical view** for
 - **Containerization:**  
   The project uses **Docker** to package the environment (PySpark, Jupyter), ensuring anyone can run it with a single command.
 
----
-
 ## 2. Pipeline Flow (Medallion Architecture)
 
 The pipeline is divided into **three stages**, where data is progressively refined.
@@ -66,5 +64,3 @@ git clone https://github.com/miguelrodrigs/bees_data_case
 
 Build and Start Environment (Jupyter)
 docker-compose up --build -d
-
-##MONITORING AND ALERTS## Monitoring and alerting should cover operational health (success/failure, execution time, retries), data quality (checking volume, null values, schema, and freshness at each layer), and infrastructure/API issues (resource usage, source API latency). The orchestrator (e.g., Airflow) should trigger immediate alerts on failure or delay (SLA), and critical quality failures should stop the pipeline to prevent bad data. All metrics should be visualized in a dashboard for complete visibility.
